@@ -1,0 +1,276 @@
+<?php
+        include "connexion.php";
+    
+        try {
+            $sql = "SELECT * FROM qr_code";
+            $req = $db->query($sql);
+
+            while ($a = $req->fetch()) {
+                $result[] = $a;
+            }
+        } catch (\Throwable $th) {
+            echo "error:.$th->getMessage";
+                print("Le qr code n'existe pas");
+        }
+
+        echo json_encode($result);
+        // $phone = $_POST["phone"];
+        // $pass = sha1($_POST["pass"]);
+        // $_POST = json_decode(file_get_contents('php://input'), true);
+        // echo $_POST;
+        // try {
+        //     $req = $db->prepare("SELECT * FROM qr_code WHERE qrCode=?");
+        //     $req->execute(array("2911de3d4a559c3b27bdaea12021"));
+        // } catch (\Throwable $th) {
+        //     print("Le qr code n'existe pas");
+        // }
+        // try {
+        //     // if(isset($qrCode)){
+    
+        //         $req = $db->prepare("SELECT * FROM qr_code WHERE qrCode=?);
+        //         $req->execute(array($qrCode));
+        //         -- 
+    
+        // } catch (\Throwable $th) {
+        // }
+?>
+
+
+<?php
+        include "connexion.php";
+    
+        try {
+            $sql = "SELECT * FROM qr_code";
+            $req = $db->query($sql);
+
+            while ($a = $req->fetch()) {
+                $result[] = $a['qrCode'];
+            }
+        } catch (\Throwable $th) {
+            echo "error:.$th->getMessage";
+                print("Le qr code n'existe pas");
+        }
+
+        echo json_encode($result);
+        // $phone = $_POST["phone"];
+        // $pass = sha1($_POST["pass"]);
+        // $_POST = json_decode(file_get_contents('php://input'), true);
+        // echo $_POST;
+        // try {
+        //     $req = $db->prepare("SELECT * FROM qr_code WHERE qrCode=?");
+        //     $req->execute(array("2911de3d4a559c3b27bdaea12021"));
+        // } catch (\Throwable $th) {
+        //     print("Le qr code n'existe pas");
+        // }
+        // try {
+        //     // if(isset($qrCode)){
+    
+        //         $req = $db->prepare("SELECT * FROM qr_code WHERE qrCode=?);
+        //         $req->execute(array($qrCode));
+        //         -- 
+    
+        // } catch (\Throwable $th) {
+        // }
+
+
+
+
+
+
+
+    include "connexion.php";
+
+    $name = $_POST["name"];
+    $phone = $_POST["phone"];
+    $pass = sha1($_POST["pass"]);
+    $_POST = json_decode(file_get_contents('php://input'), true);
+    echo $_POST;
+    try {
+        if(isset($name, $phone, $pass)){
+
+            $req = $db->prepare("SELECT * FROM utilisateurs WHERE telephone=?");
+            $req->execute(array($phone));
+            $exist = $req->rowCount();
+
+            if($exist == 0){
+                $req = $db->prepare("INSERT INTO utilisateurs VALUE (null, ?, ?, ?)");
+            $req->execute(array($name, $phone, $pass));
+            
+            if ($req) {
+                $succes = 1;
+                $msg = "Succes register";
+            }else{
+                $succes = 0;
+                $msg = "Error register";
+            }
+            }else{
+                $msg = "Phone already exist";
+                $succes = 0;
+            }
+        }else{
+            $succes = 0;
+            $msg = "Error empty data";
+        }
+
+    } catch (\Throwable $th) {
+        $succes = 0;
+        $mg = "Error: ".$th->getMessage();
+    }
+    echo json_encode([
+        'data' =>[
+            $msg,
+            $succes
+        ]
+        ]);
+    // echo json_encode([
+    //     "result"=>[
+    //         $name,
+    //         $phone,
+    //         $pass
+    //     ]
+    // ])
+
+?>
+
+
+
+
+<!-- <?php
+    include "connexion.php";
+
+    // $qrCode = $_POST["qrCode"] = "9";
+    // // $idCode = $_POST["idCode"];
+    // $idUser = $_POST["idUser"] = "2511214d60d3679867f581372021";
+    // $qrCode = $_POST["qrCode"];
+    $idUser = $_POST["idUser"];
+    $valider = " ";
+    $_POST = json_decode(file_get_contents('php://input'), true);
+    echo $_POST;
+    try {
+        if(isset($idUser, $valider)){
+
+            // $req = $db->prepare("SELECT idCode FROM qr_code WHERE qrCode=?");
+            // $req->execute(array($qrCode));
+            // $idCode = $req->fetch();
+            // $IDCode = $idCode[0];
+
+            $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=?");  //Count coupon of the current user
+            $req->execute(array($idUser));
+            // $a = $req->fetch();
+            $nbreCoupon = $req->rowCount();
+
+            $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=? AND valider = ?");  //Count coupon of the current user validity condition
+            $req->execute(array($idUser, $valider));
+            // $a = $req->fetch();
+            $nbreWin = $req->rowCount();
+            // echo "$nbreWin";
+
+            // $exist = $req->rowCount();
+            $succes = 1;
+            $msg = "Good query";
+        }else{
+            $succes = 0;
+            $msg = "Error empty data";
+        }
+
+    } catch (\Throwable $th) {
+        $succes = 0;
+        $msg = "Error: ".$th->getMessage();
+    }
+    // echo json_encode([
+    //     'data' =>[
+    //         $msg,
+    //         $succes
+    //     ]
+    //     ]);
+        echo json_encode([
+            'data' =>[
+                $msg,
+                $succes,
+                $nbreCoupon,
+                $nbreWin
+            ]
+            ]);
+    // echo json_encode([
+    //     "result"=>[
+    //         $name,
+    //         $phone,
+    //         $pass
+    //     ]
+    // ])
+?>
+
+    // include "connexion.php";
+
+    // // $qrCode = $_POST["qrCode"] = "9";
+    // // // $idCode = $_POST["idCode"];
+    // // $idUser = $_POST["idUser"] = "2511214d60d3679867f581372021";
+    // $qrCode = $_POST["qrCode"];
+    // $idUser = $_POST["idUser"];
+    // $valider = " ";
+    // $_POST = json_decode(file_get_contents('php://input'), true);
+    // echo $_POST;
+    // try {
+    //     if(isset($qrCode, $idUser, $valider)){
+
+    //         // $req = $db->prepare("SELECT idCode FROM qr_code WHERE qrCode=?");
+    //         // $req->execute(array($qrCode));
+    //         // $idCode = $req->fetch();
+    //         // $IDCode = $idCode[0];
+
+    //         $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=?");  //Count coupon of the current user
+    //         $req->execute(array($idUser));
+    //         // $a = $req->fetch();
+    //         $nbreCoupon = $req->rowCount();
+
+    //         $req = $db->prepare("SELECT idCode FROM scan WHERE idCode=? AND valider = ?");  //Count coupon 
+    //         $req->execute(array($IDCode, $valider));
+    //         // $a = $req->fetch();
+    //         $nbreWin = $req->rowCount();
+
+    //         // $exist = $req->rowCount();
+    //         $succes = 1;
+    //         $mg = "Good query";
+    //     }else{
+    //         $succes = 0;
+    //         $msg = "Error empty data";
+    //     }
+
+    // } catch (\Throwable $th) {
+    //     $succes = 0;
+    //     $mg = "Error: ".$th->getMessage();
+    // }
+    // // echo json_encode([
+    // //     'data' =>[
+    // //         $msg,
+    // //         $succes
+    // //     ]
+    // //     ]);
+    //     echo json_encode([
+    //         'data' =>[
+    //             $msg,
+    //             $succes,
+    //             $nbreCoupon,
+    //             $nbreWin
+    //         ]
+    //         ]);
+    // echo json_encode([
+    //     "result"=>[
+    //         $name,
+    //         $phone,
+    //         $pass
+    //     ]
+    // ]) -->
+
+    
+    <!-- include "connexion.php";
+
+            if ($db) {
+                $req = $db->prepare("SELECT COUNT(S.idScan) AS scan, (COUNT(S.idScan)*400) AS merite FROM utilisateurs U, scan S, qr_codes Q WHERE S.idCode = Q.idCode AND S.idUser = ? AND S.valider = 0 GROUP BY S.idUser ORDER BY COUNT(S.idScan) DESC");
+                $req->execute();
+                $array = $req->fetchAll();
+                // echo $array;
+                // return $array;
+            }
+            echo json_encode($array); -->
+            
