@@ -41,7 +41,8 @@ class _HomeState extends State<Home> {
       for (Map i in data) {
         setState(() {
           nonVal = NonValiderModel.fromJson(i).nonValider;
-          price = int.parse(nonVal) * 400;
+          // price = int.parse(nonVal) * 400;
+          price = int.parse(nonVal) * 300;
           nonValider.add(NonValiderModel.fromJson(i));
         });
       }

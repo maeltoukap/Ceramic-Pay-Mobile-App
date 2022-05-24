@@ -268,7 +268,8 @@ class ProfileState extends State<Profile> {
                                         coupons = couponModel.length;
                                         Global.coupons = coupons;
 
-                                        gagne = coupons * 400;
+                                        // gagne = coupons * 400;
+                                        gagne = coupons * 300;
 
                                         if (coupon.valider != 1) {
                                           nonValider = coupon.idScan.length;
