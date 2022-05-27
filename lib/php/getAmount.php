@@ -9,7 +9,7 @@
     try {
 
             // $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=?");  
-                $req = $db->prepare("SELECT (COUNT(idScan)*400) as price FROM `scan` WHERE valider = 0 AND idUser = ?");
+                $req = $db->prepare("SELECT (COUNT(idScan)*300) as price FROM `scan` WHERE valider = 0 AND idUser = ?");
              //Count coupon of the current user
             $req->execute(array($idUser));
             while($a = $req->fetchAll()){

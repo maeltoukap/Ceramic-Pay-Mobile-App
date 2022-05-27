@@ -8,7 +8,7 @@
     try {
 
             // $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=?");  
-                $req = $db->prepare("SELECT] COUNT(S.idScan) AS scan, (COUNT(S.idScan)*400) AS merite FROM utilisateurs U, scan S, qr_codes Q WHERE S.idCode = Q.idCode AND S.idUser = ? AND S.valider = 0 GROUP BY S.idUser ORDER BY COUNT(S.idScan) DESC");
+                $req = $db->prepare("SELECT] COUNT(S.idScan) AS scan, (COUNT(S.idScan)*300) AS merite FROM utilisateurs U, scan S, qr_codes Q WHERE S.idCode = Q.idCode AND S.idUser = ? AND S.valider = 0 GROUP BY S.idUser ORDER BY COUNT(S.idScan) DESC");
              //Count coupon of the current user
             $req->execute(array($idUser));
             while($a = $req->fetchAll()){

@@ -3,6 +3,7 @@
 
     $name = $_POST["name"];
     $phone = $_POST["phone"];
+    $ville = sha1($_POST["ville"]);
     $pass = sha1($_POST["pass"]);
     $_POST = json_decode(file_get_contents('php://input'), true);
     echo $_POST;
@@ -14,10 +15,10 @@
             $exist = $req->rowCount();
 
             if($exist == 0){
-                $req = $db->prepare("INSERT INTO utilisateurs (nom, telelephone, password) VALUES (?, ?, ?)");
-            $req->execute(array($name, $phone, $pass));
+                $query = $db->prepare("INSERT INTO utilisateurs (nom, telephone, password, ville,) VALUES (?, ?, ?, ?)");
+            $query->execute(array($name, $phone, $pass, $ville));
 
-            if ($req) {
+            if ($query) {
                 $succes = 1;
                 $msg = "Succes register";
             }else{
@@ -50,4 +51,3 @@
     //         $pass
     //     ]
     // ])
-?>

@@ -8,9 +8,12 @@ import 'package:ceramicpay/services/globals.dart';
 import 'package:ceramicpay/views/pages/profile.dart';
 import 'package:ceramicpay/views/pages/qr_scan.dart';
 import 'package:ceramicpay/models/user_model.dart';
+import 'package:ceramicpay/widgets/tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:ceramicpay/widgets/drawer_menu.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:new_version/new_version.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -41,7 +44,7 @@ class _HomeState extends State<Home> {
       for (Map i in data) {
         setState(() {
           nonVal = NonValiderModel.fromJson(i).nonValider;
-          price = int.parse(nonVal) * 400;
+          price = int.parse(nonVal) * 300;
           nonValider.add(NonValiderModel.fromJson(i));
         });
       }
@@ -75,9 +78,26 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     // getUserInfo();
+    _checkVersion();
     getUserData();
     getUserData2();
     getUserInfo();
+  }
+
+  void _checkVersion() async {
+    final newVersion = NewVersion(
+      androidId: "io.ceramicpay",
+      context: context,
+      dialogTitle: "Mise A Jour !",
+      dismissText: "Annuler",
+      dialogText:
+          "Mettez a jour votre application de la version afin de profiter des nouveaux correctifs de securite et ameliorations",
+      dismissAction: () {
+        SystemNavigator.pop();
+      },
+      updateText: "Installer",
+    );
+    newVersion.showAlertIfNecessary();
   }
 
   void getUserInfo() async {
@@ -149,10 +169,10 @@ class _HomeState extends State<Home> {
                             width: 20.0,
                           ),
                           Text(
-                            "$name",
+                            "Bienvenu $name",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 20.0,
+                              fontSize: 18.0,
                               fontWeight: FontWeight.w200,
                               fontFamily: 'Poppins',
                               color: kblack,
@@ -163,147 +183,99 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
-                  child: Card(
-                    margin: EdgeInsets.only(top: 20.0),
-                    color: kgrey,
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.times,
-                                color: Colors.red,
-                              ),
-                              Text(
-                                "Coupons non payés",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w200,
-                                  fontFamily: 'Poppins',
-                                  color: kblack,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 20.0,
-                              ),
-                              nonVal != null
-                                  ? Text(
-                                      "$nonVal",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w200,
-                                        fontFamily: 'Poppins',
-                                        color: kblack,
-                                      ),
-                                    )
-                                  : CircularProgressIndicator(
-                                      backgroundColor: kbrown,
-                                    ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.check,
-                                color: Colors.green,
-                              ),
-                              Text(
-                                "Coupons payés",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w200,
-                                  fontFamily: 'Poppins',
-                                  color: kblack,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 60.0,
-                              ),
-                              val != null
-                                  ? Text(
-                                      "$val",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w200,
-                                        fontFamily: 'Poppins',
-                                        color: kblack,
-                                      ),
-                                    )
-                                  : CircularProgressIndicator(
-                                      backgroundColor: kbrown,
-                                    ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.dollarSign,
-                                color: kblack,
-                              ),
-                              Text(
-                                "En attente",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w200,
-                                  fontFamily: 'Poppins',
-                                  color: kblack,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 60.0,
-                              ),
-                              price != null
-                                  ? Text(
-                                      "$price FCFA",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w200,
-                                        fontFamily: 'Poppins',
-                                        color: kblack,
-                                      ),
-                                    )
-                                  : CircularProgressIndicator(
-                                      backgroundColor: kbrown,
-                                    ),
-                            ],
-                          ),
-                        ],
+                SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.readme,
+                      size: 50.0,
+                      color: kbrown,
+                    ),
+                    SizedBox(
+                      width: 18.0,
+                    ),
+                    Text(
+                      "Didactitiel",
+                      // textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w200,
+                        fontFamily: 'Poppins',
+                        color: kbrown,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                Image(image: AssetImage('assets/images/ceramic-w.jpg')),
-                // RaisedButton(onPressed: () async {
-                //   // UserModel.getUser();
-                //   // final us = await UserModel.getUser();
-                //   getUserData();
-                //   getUserData2();
-                //   setState(() {
-                //     print(Global.coupons);
-                //   });
-                //   // final ub = await CouponModel.getCoupons();
-                //   // print(us.name);
-                // })
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "home.png",
+                  text:
+                      "Accedez a l'accueil et suivez le didactitiel pour apprendre a utiliser l'application Ceramic Pay.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "scan.png",
+                  text:
+                      "Scannez vos coupons. Attendez quelques secondes afin de recevoir le message de confirmation. Vos coupons scannés sont automatiquement enregisté et archivé.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "archives.png",
+                  text:
+                      "Visualisez vous derniers coupons scanné et archivé et demandez a etre payé pour ces coupons et vous recevrez votre paiement quelques heure apres.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "coupon.png",
+                  text:
+                      "Vous avez acces au numero de vos coupons, la date et l'heure de vos scan dans un format unique.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "buy-btn.png",
+                  text:
+                      "Cliquez sur le boutton 'FAIRE PAYER' afin de demander a etre payer pour vos coupons deja scannés et archivés.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "paiement.png",
+                  text:
+                      "Visualisez vos coupons dont vous avez demandé un paiement et qui n'ont pas encore été payé.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "paid.png",
+                  text:
+                      "Visualisez vos coupons dont le paiement vous a deja été versé et voyez combien vous avez deja gagné sur Ceramic Pay.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                TutorialWidget(
+                  img: "profile.png",
+                  text:
+                      "Accedez a vos informations utilisateur tels que votre nom et votre numero de telephone et modifiez votre numero de telephone a votre guise.",
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
               ],
             ),
           ),

@@ -2,9 +2,12 @@ import 'package:ceramicpay/views/forms/password.dart';
 import 'package:ceramicpay/views/forms/register.dart';
 import 'package:ceramicpay/views/forms/login.dart';
 import 'package:ceramicpay/views/forms/reset.dart';
+import 'package:ceramicpay/views/pages/archives.dart';
 import 'package:ceramicpay/views/pages/home.dart';
 import 'package:ceramicpay/views/pages/codes.dart';
 import 'package:ceramicpay/views/pages/about.dart';
+import 'package:ceramicpay/views/pages/load_payment.dart';
+import 'package:ceramicpay/views/pages/paid.dart';
 import 'package:ceramicpay/views/pages/qr_scan.dart';
 import 'package:ceramicpay/views/pages/settings.dart';
 import 'package:ceramicpay/views/pages/help.dart';
@@ -46,7 +49,7 @@ class Routes {
   }
 
   static void HomeNavigator(BuildContext context) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) {
@@ -112,6 +115,42 @@ class Routes {
         builder: (BuildContext context) {
           // return inscPAge();
           return Help();
+        },
+      ),
+    );
+  }
+
+  static void ArchivesNavigator(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          // return inscPAge();
+          return Archives();
+        },
+      ),
+    );
+  }
+
+  static void LoadNavigator(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          // return inscPAge();
+          return LoadPay();
+        },
+      ),
+    );
+  }
+
+  static void PaidNavigator(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          // return inscPAge();
+          return Paid();
         },
       ),
     );

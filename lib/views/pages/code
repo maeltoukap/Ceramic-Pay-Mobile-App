@@ -560,14 +560,14 @@ class _DrawerMenuState extends State<DrawerMenu> {
                             if (nonValider == null) {
                               nonValider = 0;
                             }
-                            // gagne = valider * 400;
+                            // gagne = valider * 300;
                           }
                           if (coupon.valider != 0) {
                             valider = coupon.idScan.length;
                             if (valider == null) {
                               valider = 0;
                             }
-                            // gagne = valider * 400;
+                            // gagne = valider * 300;
                           }
                         }
                         return 

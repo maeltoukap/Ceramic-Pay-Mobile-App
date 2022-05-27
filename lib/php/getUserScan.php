@@ -8,7 +8,7 @@
     try {
 
             // $req = $db->prepare("SELECT idCode FROM scan WHERE idUser=?");  
-            $req = $db->prepare("SELECT * FROM scan INNER JOIN qr_code ON qr_code.idCode = scan.idCode AND idUser = ?"); 
+            $req = $db->prepare("SELECT * FROM scan INNER JOIN qr_codes ON qr_codes.idCode = scan.idCode AND idUser = ? AND scan.valider= 0"); 
              //Count coupon of the current user
             $req->execute(array($idUser));
             while($a = $req->fetch()){

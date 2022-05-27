@@ -28,10 +28,10 @@ class ProfileState extends State<Profile> {
   var id;
   var name;
   var phone;
-  var coupons;
+  var coupons = 0;
   var valider;
   var nonValider;
-  var gagne;
+  var gagne = 0;
   bool isLoading = false;
   bool isLoad = false;
   void getUserInfo() async {
@@ -102,7 +102,65 @@ class ProfileState extends State<Profile> {
             print(result[2]);
             UserModel.saveUser(UserModel.fromJson(result[2]));
           });
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text(
+                "Modifications enregistrées avec succes",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.0),
+              ),
+              // title: const Text('Desole code incorrect'),
+              content: Icon(
+                FontAwesomeIcons.check,
+                color: Colors.green,
+                size: 40.0,
+              ),
+              actions: <Widget>[
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //     scanQRCode();
+                //   },
+                //   child: const Text('Reessayer'),
+                // ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
         } else {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text(
+                "Une erreur est survenu ressayer",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.0),
+              ),
+              // title: const Text('Desole code incorrect'),
+              content: Icon(
+                FontAwesomeIcons.exclamationTriangle,
+                color: Colors.red,
+                size: 40.0,
+              ),
+              actions: <Widget>[
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //     scanQRCode();
+                //   },
+                //   child: const Text('Reessayer'),
+                // ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
           setState(() {
             error = result[0];
             isLoad = false;
@@ -111,12 +169,70 @@ class ProfileState extends State<Profile> {
       } on FormatException catch (e) {
         print('erreur: $e');
         setState(() {
-          error = "Connexion internet instable veuillez reessayer";
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text(
+                "Un compte a deja ete crée avec ce numero de telephone",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16.0),
+              ),
+              // title: const Text('Desole code incorrect'),
+              content: Icon(
+                FontAwesomeIcons.exclamationTriangle,
+                color: Colors.red,
+                size: 40.0,
+              ),
+              actions: <Widget>[
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //     scanQRCode();
+                //   },
+                //   child: const Text('Reessayer'),
+                // ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+          // error = "Connexion internet instable veuillez reessayer";
         });
         print('The provided string is not valid JSON');
       }
     } else {
-      error = "Erreur de serveur reessayez svp";
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text(
+            "Une erreur est survenu ressayer",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16.0),
+          ),
+          // title: const Text('Desole code incorrect'),
+          content: Icon(
+            FontAwesomeIcons.exclamationTriangle,
+            color: Colors.red,
+            size: 40.0,
+          ),
+          actions: <Widget>[
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.pop(context);
+            //     scanQRCode();
+            //   },
+            //   child: const Text('Reessayer'),
+            // ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      // error = "Erreur de serveur reessayez svp";
     }
     setState(() {
       isLoad = false;
@@ -266,19 +382,9 @@ class ProfileState extends State<Profile> {
                                         final coupon = couponModel[i];
 
                                         coupons = couponModel.length;
-                                        Global.coupons = coupons;
 
-                                        gagne = coupons * 400;
+                                        gagne = coupons * 300;
 
-                                        if (coupon.valider != 1) {
-                                          nonValider = coupon.idScan.length;
-                                          Global.nonValider = nonValider;
-                                          if (nonValider == null) {
-                                            valider = 0;
-                                            Global.nonValider = nonValider;
-                                          }
-                                          Global.nonValider = nonValider;
-                                        }
                                         return Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,

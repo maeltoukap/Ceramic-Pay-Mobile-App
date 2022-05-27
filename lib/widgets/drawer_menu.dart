@@ -20,6 +20,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
   // List<QrModel> qrList = [];
   bool isLoading = false;
   String error = "";
+  String serverErr = "";
   void setScan(String qrCode) async {
     // setState(() {
     //   error = "";
@@ -34,6 +35,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
           .post(Url.setScan, body: {"qrCode": qrCode, "idUser": User});
 
       print(Response.body);
+      setState(() {
+        serverErr = Response.body;
+      });
+      print(serverErr);
       if (Response.statusCode == 200) {
         var data = jsonDecode(Response.body);
         var result = data['data'];
@@ -54,7 +59,39 @@ class _DrawerMenuState extends State<DrawerMenu> {
         print(Response.statusCode);
       }
     } catch (e) {
-      print('erreur: $e');
+          setState(() {
+            isLoading = false;
+          });
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text(
+            "Connexion internet instable",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16.0),
+          ),
+          // title: const Text('Desole code incorrect'),
+          content: Icon(
+            FontAwesomeIcons.exclamationTriangle,
+            color: Colors.red,
+            size: 40.0,
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                scanQRCode();
+              },
+              child: const Text('Reessayer'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      // print('erreur: $e');
     }
     print(error);
     print(isLoading);
@@ -89,7 +126,41 @@ class _DrawerMenuState extends State<DrawerMenu> {
             showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                title: const Text('Desole code incorrect'),
+                title: const Text(
+                  "Le code du coupon n'est pas valide ou a deja ete validé dans une autre transaction",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                // title: const Text('Desole code incorrect'),
+                content: Icon(
+                  FontAwesomeIcons.exclamationTriangle,
+                  color: Colors.red,
+                  size: 40.0,
+                ),
+                // qrCode == "-1" ? Text('') : Text('$localQrCode'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      scanQRCode();
+                    },
+                    child: const Text('Reessayer'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'OK'),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          } else if (serverErr == "Erreur de serveur") {
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text(
+                  "Connexion internet instable",
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                // title: const Text('Desole code incorrect'),
                 content: qrCode == "-1" ? Text('') : Text('$localQrCode'),
                 actions: <Widget>[
                   TextButton(
@@ -127,31 +198,54 @@ class _DrawerMenuState extends State<DrawerMenu> {
             );
           }
         } else {
-          showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => Container(
-              width: MediaQuery.of(context).size.width,
-              margin:
-                  const EdgeInsets.only(left: 30.0, right: 30.0, top: 180.0),
-              alignment: Alignment.center,
-              child: Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(
-                    backgroundColor: kbrown,
-                  ),
-                  height: 200.0,
-                  width: 200.0,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 180.0),
+            alignment: Alignment.center,
+            child: Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(
+                  backgroundColor: kbrown,
                 ),
+                height: 200.0,
+                width: 200.0,
               ),
             ),
           );
+          // showDialog<String>(
+          //   context: context,
+          //   builder: (BuildContext context) => Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     margin:
+          //         const EdgeInsets.only(left: 30.0, right: 30.0, top: 180.0),
+          //     alignment: Alignment.center,
+          //     child: Center(
+          //       child: SizedBox(
+          //         child: CircularProgressIndicator(
+          //           backgroundColor: kbrown,
+          //         ),
+          //         height: 200.0,
+          //         width: 200.0,
+          //       ),
+          //     ),
+          //   ),
+          // );
         }
       } else {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: const Text('Desole code incorrect'),
-            content: qrCode == "-1" ? Text('') : Text('$localQrCode'),
+            title: const Text(
+              "Le code du coupon n'est pas valide ou a deja ete validé dans une autre transaction",
+              style: TextStyle(fontSize: 16.0),
+            ),
+            // title: const Text('Desole code incorrect'),
+            content: Icon(
+              FontAwesomeIcons.exclamationTriangle,
+              color: Colors.red,
+              size: 40.0,
+            ),
+            // qrCode == "-1" ? Text('') : Text('$localQrCode'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -222,7 +316,8 @@ class _DrawerMenuState extends State<DrawerMenu> {
             onTap: () => scanQRCode(),
           ),
           Divider(),
-          ListTile(
+          ExpansionTile(
+            // backgroundColor: kbrown,
             title: Row(
               children: [
                 Icon(FontAwesomeIcons.stream),
@@ -235,10 +330,84 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 ),
               ],
             ),
-            onTap: () {
-              Routes.CodesNavigator(context);
-            },
+            children: <Widget>[
+              Divider(),
+              ListTile(
+                tileColor: kbrown300,
+                title: Row(
+                  children: [
+                    Icon(FontAwesomeIcons.archive),
+                    SizedBox(
+                      width: 30.0,
+                    ),
+                    Text(
+                      'Archives',
+                      style: TextStyle(fontSize: 19.0),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Routes.ArchivesNavigator(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                tileColor: kbrown300,
+                title: Row(
+                  children: [
+                    Icon(FontAwesomeIcons.moneyBill),
+                    SizedBox(
+                      width: 30.0,
+                    ),
+                    Text(
+                      "Paiements en cours",
+                      style: TextStyle(fontSize: 19.0),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Routes.LoadNavigator(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                tileColor: kbrown300,
+                title: Row(
+                  children: [
+                    Icon(FontAwesomeIcons.moneyBillWave),
+                    SizedBox(
+                      width: 30.0,
+                    ),
+                    Text(
+                      "Coupons payés",
+                      style: TextStyle(fontSize: 19.0),
+                    )
+                  ],
+                ),
+                onTap: () {
+                  Routes.PaidNavigator(context);
+                },
+              ),
+            ],
           ),
+          // Divider(),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       Icon(FontAwesomeIcons.stream),
+          //       SizedBox(
+          //         width: 30.0,
+          //       ),
+          //       Text(
+          //         'Mes Codes',
+          //         style: TextStyle(fontSize: 19.0),
+          //       ),
+          //     ],
+          //   ),
+          //   onTap: () {
+          // Routes.CodesNavigator(context);
+          //   },
+          // ),
           Divider(),
           ListTile(
             title: Row(

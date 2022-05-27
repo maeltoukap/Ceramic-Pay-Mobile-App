@@ -44,7 +44,43 @@ class Api {
       }
     } catch (e) {}
   }
+  
+  static listArchives(String idUser) async {
+    try {
+      final response =
+          await http.post(Url.listArchives, body: {"idUser": idUser});
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return null;
+      }
+    } catch (e) {}
+  }
 
+  static listPaid(String idUser) async {
+    try {
+      final response =
+          await http.post(Url.listPaid, body: {"idUser": idUser});
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return null;
+      }
+    } catch (e) {}
+  }
+
+  static listLoad(String idUser) async {
+    try {
+      final response =
+          await http.post(Url.listLoad, body: {"idUser": idUser});
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return null;
+      }
+    } catch (e) {}
+  }
+  
   static countNonValider(String idUser) async {
     try {
       final response =
@@ -152,6 +188,9 @@ class Url {
   static String setScan = ApiLink + "/insertScan.php";
   static String getCoupons = ApiLink + "/countRows.php";
   static String listCoupons = ApiLink + "/getUserScan.php";
+  static String listArchives = ApiLink + "/getUserArchives.php";
+  static String listPaid = ApiLink + "/getUserPaidScan.php";
+  static String listLoad = ApiLink + "/getUserLoadScan.php";
   static String countNonValider = ApiLink + "/countNonValider.php";
   static String countValider = ApiLink + "/countValider.php";
   static String getAmount = ApiLink + "/getAmount.php";
