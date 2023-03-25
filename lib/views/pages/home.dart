@@ -86,7 +86,7 @@ class _HomeState extends State<Home> {
 
   void _checkVersion() async {
     final newVersion = NewVersion(
-      androidId: "io.ceramicpay",
+      androidId: "io.ceramicpay.com",
       context: context,
       dialogTitle: "Mise A Jour !",
       dismissText: "Annuler",

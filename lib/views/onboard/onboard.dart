@@ -1,3 +1,4 @@
+import 'package:ceramicpay/views/forms/login.dart';
 import 'package:ceramicpay/views/forms/register.dart';
 import 'package:ceramicpay/const/loading.dart';
 import 'package:ceramicpay/models/onboard_model.dart';
@@ -74,7 +75,8 @@ class _OnBoardState extends State<OnBoard> {
             onPressed: () {
               _storeOnboardInfo();
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()));
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+              // MaterialPageRoute(builder: (context) => RegisterScreen()));
             },
             child: Text(
               "Skip",
@@ -155,7 +157,8 @@ class _OnBoardState extends State<OnBoard> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => RegisterScreen()));
+                                builder: (context) => LoginScreen()));
+                        // builder: (context) => RegisterScreen()));
                       }
 
                       _pageController.nextPage(

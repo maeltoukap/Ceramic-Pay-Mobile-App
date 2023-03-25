@@ -1,4 +1,4 @@
-package io.ceramicpay
+package io.ceramicpay.com
 
 import io.flutter.embedding.android.FlutterActivity
 
