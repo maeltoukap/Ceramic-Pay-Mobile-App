@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="scspay.com.scspay">
    <application
-        android:label="scspay"
+        android:label="Ceramic Pay"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
